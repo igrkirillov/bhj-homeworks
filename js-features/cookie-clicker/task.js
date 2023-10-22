@@ -4,6 +4,9 @@ const origWidth = cookieElement.width;
 const origHeight = cookieElement.height;
 let clickCount = 0;
 let lastClickDateTime = null;
+
+cookieElement.onclick = clickHandler;
+
 function clickHandler() {
     if (cookieElement.width !== origWidth) {
         cookieElement.width = origWidth;
@@ -28,5 +31,3 @@ function calcVelocity(clickDateTime) {
     lastClickDateTime = clickDateTime;
     return velocity;
 }
-
-cookieElement.onclick = clickHandler;

@@ -1,7 +1,11 @@
 "use strict";
+
 const timerElement = document.getElementById("timer");
 let counterValue = +timerElement.textContent;
 let countDownIntervalId = null;
+
+countDownIntervalId = setInterval(countDownExec, 1000);
+
 function countDownExec() {
     --counterValue;
     timerElement.textContent = formatTimeToHHmmSS(counterValue);
@@ -17,8 +21,6 @@ function downloadFile(fileUrl) {
     downloadLink.href = fileUrl;
     downloadLink.click();
 }
-
-countDownIntervalId = setInterval(countDownExec, 1000);
 
 function formatTimeToHHmmSS(origSeconds) {
     const hours = +(origSeconds / 3600).toFixed();

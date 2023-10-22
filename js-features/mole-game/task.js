@@ -5,6 +5,10 @@ const minStrikes = 10;
 let mistakes = 0;
 let strikes = 0;
 
+for (let i = 1; i <= 9; ++i) {
+    document.getElementById(getHoleId(i)).onclick = getSpecHoleClickHandler(i);
+}
+
 function getSpecHoleClickHandler(index) {
     const holeElement = document.getElementById(getHoleId(index));
     function holeClickHandler() {
@@ -15,10 +19,6 @@ function getSpecHoleClickHandler(index) {
         }
     }
     return holeClickHandler;
-}
-
-for (let i = 1; i <= 9; ++i) {
-    document.getElementById(getHoleId(i)).onclick = getSpecHoleClickHandler(i);
 }
 
 function getHoleId(index) {
