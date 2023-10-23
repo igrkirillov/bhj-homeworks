@@ -12,8 +12,8 @@ function clickHandler() {
         cookieElement.width = origWidth;
         cookieElement.height = origHeight;
     } else {
-        cookieElement.width = cookieElement.width - 5;
-        cookieElement.height = cookieElement.height - 5;
+        cookieElement.width = origWidth - 5;
+        cookieElement.height = origHeight - 5;
     }
     ++clickCount;
     document.getElementById("clicker__counter").textContent = "" + clickCount;
