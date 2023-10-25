@@ -1,7 +1,6 @@
 "use strict";
 const cookieElement = document.getElementById("cookie");
 const origWidth = cookieElement.width;
-const origHeight = cookieElement.height;
 let clickCount = 0;
 let lastClickDateTime = null;
 
@@ -10,10 +9,8 @@ cookieElement.onclick = clickHandler;
 function clickHandler() {
     if (cookieElement.width !== origWidth) {
         cookieElement.width = origWidth;
-        cookieElement.height = origHeight;
     } else {
         cookieElement.width = origWidth - 5;
-        cookieElement.height = origHeight - 5;
     }
     ++clickCount;
     document.getElementById("clicker__counter").textContent = "" + clickCount;
