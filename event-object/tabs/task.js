@@ -1,4 +1,5 @@
-for (const tab of Array.from(document.querySelectorAll("div.tab"))) {
+const tabs = Array.from(document.querySelectorAll("div.tab"));
+for (const tab of tabs) {
     tab.addEventListener("click", () => onClickTab.call(tab));
 }
 
