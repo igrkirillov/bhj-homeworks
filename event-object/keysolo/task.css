@@ -2,8 +2,12 @@
   font-size: 50px;
 }
 
-.symbol_correct {
+#char.symbol_correct {
   color: green;
+}
+
+#space.symbol_correct {
+  background-color: green;
 }
 
 .word_incorrect {

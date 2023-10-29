@@ -4,6 +4,10 @@ class Game {
     this.wordElement = container.querySelector('.word');
     this.winsElement = container.querySelector('.status__wins');
     this.lossElement = container.querySelector('.status__loss');
+    this.timer = container.querySelector(".timer");
+    this.timerIntervalId = null;
+    // Ctrl, Alt, Shift, CapsLock
+    this.skippingKeys = ["Control", "Alt", "Shift", "CapsLock", "GroupNext"];
 
     this.reset();
 
@@ -25,6 +29,18 @@ class Game {
       При неправильном вводе символа - this.fail();
       DOM-элемент текущего символа находится в свойстве this.currentSymbol.
      */
+    window.addEventListener("keydown", keyEvent => {
+      if (this.skippingKeys.includes(keyEvent.key)) {
+        // пропускаем обработку если нажата клавиша из skippingKeys
+        return;
+      }
+      const typedSymbol = keyEvent.key;
+      if (typedSymbol.toUpperCase() === this.currentSymbol.textContent.toUpperCase()) {
+        this.success()
+      } else {
+        this.fail();
+      }
+    });
   }
 
   success() {
@@ -46,6 +62,7 @@ class Game {
 
   fail() {
     if (++this.lossElement.textContent === 5) {
+      this.stopTimer();
       alert('Вы проиграли!');
       this.reset();
     }
@@ -56,21 +73,35 @@ class Game {
     const word = this.getWord();
 
     this.renderWord(word);
+    this.startTimer();
+  }
+
+  startTimer() {
+    this.stopTimer();
+    const timerHandler = () => {
+      let remainingSecs = +this.timer.textContent;
+      --remainingSecs;
+      this.timer.textContent = "" + remainingSecs;
+      if (remainingSecs <= 0) {
+        this.stopTimer();
+        this.fail();
+      }
+    };
+    const game = this;
+    this.timerIntervalId = setInterval(() => timerHandler.call(game), 1000);
+  }
+
+  stopTimer() {
+    if (this.timerIntervalId !== null) {
+      clearInterval(this.timerIntervalId);
+      this.timerIntervalId = null;
+    }
   }
 
   getWord() {
     const words = [
-        'bob',
-        'awesome',
-        'netology',
-        'hello',
-        'kitty',
-        'rock',
-        'youtube',
-        'popcorn',
-        'cinema',
-        'love',
-        'javascript'
+        'я люблю kitkat',
+        'I am адепт'
       ],
       index = Math.floor(Math.random() * words.length);
 
@@ -80,13 +111,15 @@ class Game {
   renderWord(word) {
     const html = [...word]
       .map(
-        (s, i) =>
-          `<span class="symbol ${i === 0 ? 'symbol_current': ''}">${s}</span>`
-      )
+        (s, i) => {
+            const id = s !== " " ? "char" : "space";
+            return `<span id=${id} class="symbol ${i === 0 ? 'symbol_current' : ''}">${s}</span>`;
+        })
       .join('');
     this.wordElement.innerHTML = html;
 
     this.currentSymbol = this.wordElement.querySelector('.symbol_current');
+    this.timer.textContent = word.length;
   }
 }
 
