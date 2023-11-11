@@ -1,8 +1,8 @@
 const fontLinks = Array.from(document.querySelectorAll("div.book__control_font-size > a.font-size"));
 const colorLinks = Array.from(document.querySelectorAll("div.book__control_color > a.color"));
 const backgroundLinks = Array.from(document.querySelectorAll("div.book__control_background > a.color"));
-
 const contentElement = document.querySelector("div.book__content");
+
 addClickListener(onClickOnFontLink, fontLinks);
 addClickListener(onClickOnColorLink, colorLinks);
 addClickListener(onClickOnBackgroundLink, backgroundLinks);

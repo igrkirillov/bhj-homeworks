@@ -13,16 +13,16 @@ function startRotator(rotator, cases) {
         nextIndex: 1,
     };
     const firstCase = cases[0];
-    setTimeout(() => rotate.call(context), +firstCase.dataset.speed);
+    setTimeout(() => rotateCases.call(context), +firstCase.dataset.speed);
 }
 
-function rotate() {
-    const prevIndex = this.nextIndex === 0 ? this.cases.length - 1 : this.nextIndex - 1;
-    const currentIndex = this.nextIndex;
-    this.nextIndex = currentIndex === this.cases.length - 1 ? 0 : currentIndex + 1;
-    this.cases[prevIndex].classList.remove("rotator__case_active");
-    this.cases[currentIndex].classList.add("rotator__case_active");
-    this.cases[currentIndex].style.color = this.cases[currentIndex].dataset.color;
+function rotateCases() {
     const context = this;
-    setTimeout(() => rotate.call(context), +this.cases[currentIndex].dataset.speed);
+    const prevIndex = context.nextIndex === 0 ? context.cases.length - 1 : context.nextIndex - 1;
+    const currentIndex = context.nextIndex;
+    context.nextIndex = currentIndex === context.cases.length - 1 ? 0 : currentIndex + 1;
+    context.cases[prevIndex].classList.remove("rotator__case_active");
+    context.cases[currentIndex].classList.add("rotator__case_active");
+    context.cases[currentIndex].style.color = context.cases[currentIndex].dataset.color;
+    setTimeout(() => rotateCases.call(context), +context.cases[currentIndex].dataset.speed);
 }
