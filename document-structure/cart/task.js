@@ -117,8 +117,10 @@ function appendCartItemElementToCartWithFlyEffect(productId, cartItemElement) {
         startPoint,
         endPoint,
         speed,
-        x: startPoint.x,
-        y: startPoint.y,
+        _currentPoint: {
+            x: startPoint.x,
+            y: startPoint.y,
+        },
         imageElement: null,
         intervalId: null,
         get nextPoint() {
@@ -126,16 +128,18 @@ function appendCartItemElementToCartWithFlyEffect(productId, cartItemElement) {
             const dy = Math.sqrt(speed * speed / (1 + k * k) );
             const dx = Math.sqrt(speed * speed - dy * dy);
             return {
-                x: this.x + dx,
-                y: this.y - dy
+                x: this._currentPoint.x + dx,
+                y: this._currentPoint.y - dy
             };
         },
         set currentPoint(point) {
-            this.x = point.x;
-            this.y = point.y;
+            this._currentPoint = point;
+        },
+        get currentPoint() {
+            return this._currentPoint;
         },
         get flyEnd() {
-            return this.x >= endPoint.x || this.y <= endPoint.y;
+            return this._currentPoint.x >= endPoint.x || this._currentPoint.y <= endPoint.y;
         }
     }
     startImageFlying(getProductImageUrl(productElement), context);
