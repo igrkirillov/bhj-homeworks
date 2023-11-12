@@ -5,6 +5,13 @@ class Product {
     }
 }
 
+class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
 const productsElements = Array.from(document.querySelectorAll(".product"));
 const cartProductsElement = document.querySelector(".cart__products");
 const productsInCart = loadProductsInCartFromStorage();
@@ -104,23 +111,14 @@ function appendCartItemElementToCartWithoutFlyEffect(cartItemElement) {
 function appendCartItemElementToCartWithFlyEffect(productId, cartItemElement) {
     const productElement = getProductElementByProductId(productId);
     const speed = 10; //px
-    const startPoint = {
-        x: productElement.getBoundingClientRect().left,
-        y: productElement.getBoundingClientRect().bottom
-    }
-    const endPoint = {
-        x: window.innerWidth / 2,
-        y: cartProductsElement.getBoundingClientRect().top
-    }
+    const startPoint = new Point (productElement.getBoundingClientRect().left, productElement.getBoundingClientRect().top);
+    const endPoint = new Point (window.innerWidth / 2, cartProductsElement.getBoundingClientRect().top);
     const context = {
         cartItemElement,
         startPoint,
         endPoint,
         speed,
-        _currentPoint: {
-            x: startPoint.x,
-            y: startPoint.y,
-        },
+        _currentPoint: startPoint,
         imageElement: null,
         intervalId: null,
         get nextPoint() {
@@ -150,8 +148,8 @@ function startImageFlying(imageUrl, context) {
     imageElement.classList.add("product__image");
     imageElement.src = imageUrl;
     imageElement.style.position = "fixed";
-    imageElement.style.top = Math.trunc(context.y) + "px";
-    imageElement.style.left = Math.trunc(context.x) + "px";
+    imageElement.style.top = Math.trunc(context.currentPoint.y) + "px";
+    imageElement.style.left = Math.trunc(context.currentPoint.x) + "px";
     document.getElementsByTagName("body")[0].appendChild(imageElement);
     context.imageElement = imageElement;
     context.intervalId = setInterval(() => flyImage.call(context), 5);
