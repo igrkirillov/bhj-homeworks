@@ -17,8 +17,8 @@ const cartProductsElement = document.querySelector(".cart__products");
 const productsInCart = loadProductsInCartFromStorage();
 
 productsInCart.forEach(product => {
-    const productElement = getProductElementByProductId(product.id);
-    const cartItemElement = createCartItemElement(product.id, "", getProductImageUrl(productElement), product.quantity);
+    const imageUrl = getProductImageUrlByProductId(product.id);
+    const cartItemElement = createCartItemElement(product.id, "", imageUrl, product.quantity);
     appendCartItemElementToCartWithoutFlyEffect(cartItemElement);
 })
 
@@ -60,9 +60,8 @@ function setCurrentProductQuantityValue(productElement, newValue) {
     quantityElement.textContent = "" + newValue;
 }
 
-function getProductImageUrl(productElement) {
-    const imageElement = Array.from(document.querySelectorAll(".product__image"))
-        .filter(el => el.closest(".product") === productElement)[0];
+function getProductImageUrlByProductId(productId) {
+    const imageElement = getProductImageElementByProductId(productId);
     return imageElement.src;
 }
 
@@ -76,7 +75,8 @@ function onClickOnAddProductToCart() {
     const quantityValue = getCurrentProductQuantityValue(productElement);
     if (!isProductExistInCart(productElement)) {
         addOrUpdateProductIfExists(productId, quantityValue);
-        const cartItemElement = createCartItemElement(productId, "", getProductImageUrl(productElement), quantityValue);
+        const imageUrl = getProductImageUrlByProductId(productId);
+        const cartItemElement = createCartItemElement(productId, "", imageUrl, quantityValue);
         appendCartItemElementToCartWithFlyEffect(productId, cartItemElement);
     } else {
         const cartItemElement = getCartItemElementByProductId(productId);
@@ -109,9 +109,10 @@ function appendCartItemElementToCartWithoutFlyEffect(cartItemElement) {
 }
 
 function appendCartItemElementToCartWithFlyEffect(productId, cartItemElement) {
-    const productElement = getProductElementByProductId(productId);
+    const productImageElement = getProductImageElementByProductId(productId);
     const speed = 10; //px
-    const startPoint = new Point (productElement.getBoundingClientRect().left, productElement.getBoundingClientRect().top);
+    const startPoint =
+        new Point (productImageElement.getBoundingClientRect().left, productImageElement.getBoundingClientRect().top);
     const endPoint = new Point (window.innerWidth / 2, cartProductsElement.getBoundingClientRect().top);
     const context = {
         cartItemElement,
@@ -140,7 +141,7 @@ function appendCartItemElementToCartWithFlyEffect(productId, cartItemElement) {
             return this._currentPoint.x >= endPoint.x || this._currentPoint.y <= endPoint.y;
         }
     }
-    startImageFlying(getProductImageUrl(productElement), context);
+    startImageFlying(getProductImageUrlByProductId(productId), context);
 }
 
 function startImageFlying(imageUrl, context) {
@@ -173,6 +174,12 @@ function flyImage() {
 
 function getProductElementByProductId(productId) {
     return productsElements.filter(el => el.dataset.id === productId)[0];
+}
+
+function getProductImageElementByProductId(productId) {
+    const productElement = getProductElementByProductId(productId);
+    return Array.from(document.querySelectorAll(".product__image"))
+        .filter(el => el.closest(".product") === productElement)[0];
 }
 
 function setQuantityValueOfCartItem(cartItemElement, newQuantityValue) {
