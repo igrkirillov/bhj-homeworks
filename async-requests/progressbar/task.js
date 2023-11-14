@@ -10,21 +10,22 @@ formElement.addEventListener("submit", event => {
 
 function sendFileToSite() {
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener("progress", event => {
+    xhr.upload.addEventListener("progress", event => {
         setProgress(event.loaded, event.total);
     });
-    xhr.upload.onerror = function() {
-        console.log(`Error during the upload: ${xhr.status}.`);
-        alert(xhr.statusText);
-    };
-    xhr.onload = function() {
-        console.log('Upload completed successfully.');
-        setProgressDone();
-    };
-    const formData = new FormData();
-    const file = fileElement.files[0];
-    formData.append(fileElement.name, file, file.name);
-    xhr.open("POST", "https://students.netoservices.ru/nestjs-backend/upload");
+    xhr.addEventListener("readystatechange", () => {
+        if (xhr.readyState === xhr.DONE) {
+            if (xhr.status >= 200 || xhr.status < 300) {
+                alert("Done");
+                setProgressZero();
+            } else {
+                alert("Error: " + xhr.statusText);
+            }
+        }
+    });
+    const formData = new FormData(formElement);
+    xhr.open("POST", "https://students.netoservices.ru/nestjs-backend/upload", true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhr.send(formData);
 }
 
@@ -32,6 +33,6 @@ function setProgress(loaded, total) {
     progressElement.value = +(loaded / total).toFixed(1);
 }
 
-function setProgressDone() {
-    progressElement.value = 1;
+function setProgressZero() {
+    progressElement.value = 0;
 }
