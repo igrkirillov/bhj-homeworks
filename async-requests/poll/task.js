@@ -52,6 +52,7 @@ function sendAnswerToSiteAndDisplayResultOnPage(questionId, answerNum) {
     xhr.setRequestHeader( 'Content-type', 'application/x-www-form-urlencoded' );
     xhr.send( `vote=${questionId}&answer=${answerNum}`);
     if (xhr.status >= 200 && xhr.status < 300) {
+        alert("Ответ отправлен!")
         const response = JSON.parse(xhr.responseText);
         const allVotes = response.stat.map(el => el.votes).reduce((acc, current) => acc + current, 0);
         displayStat(response.stat.map(el => new StatItem(el.answer, el.votes, allVotes)));
