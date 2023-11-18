@@ -42,6 +42,11 @@
 }
 
 .welcome_active {
-  display: block;
+  display: flex;
+  align-items: center;
   text-align: center;
+}
+
+button#signout {
+    margin: 0 10px;
 }

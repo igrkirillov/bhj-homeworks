@@ -1,8 +1,17 @@
 const editorElement = document.getElementById("editor");
+const cleanerElement = document.getElementById("cleaner");
 
 editorElement.value = getTextFromLocalStorage();
 editorElement.addEventListener("input", debounceFunction(onTextChangeOnEditor, 500));
 editorElement.focus();
+
+cleanerElement.addEventListener("click", onClickOnCleaner)
+
+function onClickOnCleaner() {
+    editorElement.value = "";
+    saveTextToLocalStorage(editorElement.value);
+    editorElement.focus();
+}
 
 function onTextChangeOnEditor() {
     saveTextToLocalStorage(editorElement.value);

@@ -1,10 +1,19 @@
 textarea {
-  max-width: 100%;
-  width: 100%;
+  flex-shrink: 0;
   display: block;
   padding: 10px 20px;
-  margin: 0 0 20px 0;
+  margin: 0 0 0 0;
   font-family: Golos, Arial, sans-serif;
   border: 1px solid #e2e2e2;
   box-sizing: border-box;
+}
+
+.card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+#cleaner {
+  margin: 0 10px;
 }
